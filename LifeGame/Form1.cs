@@ -8,6 +8,14 @@ namespace LifeGame
         IOrganismPainting organismPainting;
         OrganismPaintingInjector organismPaintingInjector;
 
+        IGridDesign gridDesign;
+        GridDesignInjector gridDesignInjector;
+
+        IGridCoordinates gridCoordinates;
+        GridCoordinatesInjector gridCoordinatesInjector;
+
+        int squareSide = 50;
+
         Bitmap btm;
         List<Point> coordinates;
         Graphics g;
@@ -24,11 +32,20 @@ namespace LifeGame
             paintOrganisms();
         }
 
+        OrganismReproduction or;
 
-        
-        //////////////////////////
-        //MAKE THIS INTO A CLASS//
-        //////////////////////////
+
+        private void checkReproduction()
+        {
+
+            or = new OrganismReproduction(pbGrid.Height / squareSide);
+
+            or.checkReproduction();
+
+            gridDrawing();
+            paintOrganisms();
+
+        }
         private void gridDrawing()
         {
             Pen pen = new Pen(Color.Black);
@@ -38,18 +55,21 @@ namespace LifeGame
             btm = new Bitmap(pbGrid.Width, pbGrid.Height);
             g = Graphics.FromImage(btm);
 
-            GridDesign gd = new GridDesign(pbGrid, pointA, pointB, pen, g, btm);
-            GridCoordinates gridCoordinates = new GridCoordinates();
+            gridDesign = new GridDesign(pbGrid, pointA, pointB, pen, g, btm);
+            gridDesignInjector = new GridDesignInjector(gridDesign);
 
-            coordinates = gridCoordinates.cellCordinates(pbGrid.Height / 50, pointC);
+            gridCoordinates = new GridCoordinates();
+            gridCoordinatesInjector = new GridCoordinatesInjector(gridCoordinates);
 
-            gd.drawGrid();
+            coordinates = gridCoordinatesInjector.getCoordinates(pbGrid.Height / squareSide, pointC);
+
+            gridDesignInjector.gridDraw();
 
         }
 
         private void createOrganism()
         {
-            organismFactory = new OrganismFactory(coordinates, pbGrid.Height / 50);
+            organismFactory = new OrganismFactory(coordinates, pbGrid.Height / squareSide);
             organismInjector = new OrganismFactoryInjector(organismFactory);
 
             organismInjector.organismCreation();
@@ -62,9 +82,26 @@ namespace LifeGame
             organismPaintingInjector = new OrganismPaintingInjector(organismPainting);
 
             organismPaintingInjector.organismsPaint();
-            
 
         }
 
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+
+            timer1.Start();
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+
+            checkReproduction();
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
+        }
     }
 }

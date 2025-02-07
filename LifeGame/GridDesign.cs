@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LifeGame
 {
-    internal class GridDesign
+    internal class GridDesign : IGridDesign
     {
         private PictureBox cPbGrid;
         private Point cPointA;
@@ -17,6 +17,8 @@ namespace LifeGame
         private Pen cPen;
         private Graphics g;
         private Bitmap btm;
+
+        int gridSide = 50;
 
         public GridDesign(PictureBox pbGrid, Point pointA, Point pointB, Pen pen, Graphics gr, Bitmap btmp)
         {
@@ -31,14 +33,14 @@ namespace LifeGame
         public void drawGrid()
         {
 
-            int cellSize = cPbGrid.Width / 50;
+            int cellSize = cPbGrid.Width / gridSide;
 
             cPointA.X = 0;
             cPointA.Y = 0;
             cPointB.X = 0;
             cPointB.Y = cPbGrid.Height;
 
-            for (int i = 0; i <= 50; i++)
+            for (int i = 0; i <= gridSide; i++)
             {  
                 g.DrawLine(cPen, cPointA, cPointB);
                 cPointA.X += cellSize;
@@ -51,7 +53,7 @@ namespace LifeGame
             cPointB.X = cPbGrid.Width;
             cPointB.Y = 0;
 
-            for (int j = 0; j <= 50; j++)
+            for (int j = 0; j <= gridSide; j++)
             {
                 g.DrawLine(cPen, cPointA, cPointB);
                 cPointA.Y += cellSize;

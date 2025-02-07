@@ -18,6 +18,11 @@ namespace LifeGame
             this.isAlive = b;
         }
 
+        public Organism Clone()
+        {
+            return new Organism(this.startDrawingPoint, this.isAlive, this.cellSide);
+        }
+
        
     }
 }

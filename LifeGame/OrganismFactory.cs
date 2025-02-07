@@ -30,7 +30,7 @@ namespace LifeGame
                 bool isAlive;
                 int number = rdn.Next(100);
 
-                if (number < 20)
+                if (number < 15)
                 {
                     isAlive = true;
                 }
